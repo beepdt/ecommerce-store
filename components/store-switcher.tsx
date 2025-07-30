@@ -5,9 +5,9 @@ import { useStoreModal } from "@/hooks/use-store-modal";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Check, ChevronsUpDown, StoreIcon } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle, StoreIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "./ui/command";
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
@@ -50,7 +50,7 @@ export default function StoreSwitcher({
           className={cn("w-[200px] justify-between", className)}
         >
           <StoreIcon className="h-4 w-4 mr-2" />
-          Current Store
+          {currentStore?.label}
           <ChevronsUpDown className="ml-auto shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -68,6 +68,15 @@ export default function StoreSwitcher({
                         </CommandItem>
                     ))}
                 </CommandGroup>
+            </CommandList>
+            <CommandSeparator/>
+            <CommandList>
+              <CommandGroup>
+                <CommandItem onSelect={()=>{setOpen(false); storeModal.onOpen()}}>
+                  <PlusCircle/>
+                  Create Store
+                </CommandItem>
+              </CommandGroup>
             </CommandList>
         </Command>
       </PopoverContent>
