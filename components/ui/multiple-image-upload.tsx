@@ -8,13 +8,13 @@ import { info } from "console";
 
 interface ImageUploadProps {
   disabled?: boolean;
-  onChange: (value: string ) => void;
+  onChange: (value: string[]) => void;
   onRemove: (value: string) => void;
   value: string[];
   multiple?: boolean;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
+const MultiImageUpload: React.FC<ImageUploadProps> = ({
   disabled,
   onChange,
   onRemove,
@@ -28,15 +28,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   }, []);
 
   const onUpload = (result: any) => {
-    if (!multiple && result.info?.secure_url) {
-      onChange(result.info.secure_url);
-      console.log("Single Upload Sucess", result);
-    }
-    if (multiple) {
-      const url = result.info.secure_url;
-      onChange(url);
-      console.log("Mulitple Upload Sucess Result", result);
-    }
+    const newUrls = result.info.files
+      .filter((file: any) => file.uploadInfo?.secure_url)
+      .map((file: any) => file.uploadInfo.secure_url);
+    onChange(newUrls);
+    console.log("Mulitple Upload Sucess Result", newUrls);
   };
 
   if (!isMounted) {
@@ -66,9 +62,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ))}
       </div>
       <CldUploadWidget
-        onSuccess={onUpload}
+        onQueuesEnd={onUpload}
         uploadPreset="asdxasdwxw"
-       
+        options={{
+          multiple: true,
+          maxFiles:5
+        }}
       >
         {({ open }) => {
           const onClick = () => {
@@ -90,4 +89,4 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     </div>
   );
 };
-export default ImageUpload;
+export default MultiImageUpload;
