@@ -32,7 +32,7 @@ const MultiImageUpload: React.FC<ImageUploadProps> = ({
       .filter((file: any) => file.uploadInfo?.secure_url)
       .map((file: any) => file.uploadInfo.secure_url);
     onChange(newUrls);
-    console.log("Mulitple Upload Sucess Result", newUrls);
+    ;
   };
 
   if (!isMounted) {
@@ -62,7 +62,7 @@ const MultiImageUpload: React.FC<ImageUploadProps> = ({
         ))}
       </div>
       <CldUploadWidget
-        onQueuesEnd={onUpload}
+        onQueuesEnd={onUpload} //to handle multiple image upload
         uploadPreset="asdxasdwxw"
         options={{
           multiple: true,
